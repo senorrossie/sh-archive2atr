@@ -18,27 +18,27 @@ function my_sio2bsd() {
 }
 
 function create_atr() {
-	DISKSIZE=${1:-130}
-		case $DISKSIZE in
-			90)
-				# SD - 90k
-				printf "\x96\x02\x80\x16\x80\00\00\00\00\00\00\00\00\00\00\00" > ${DEST}
-				truncate -s +90k ${DEST}
-				printf "\nCreated new SD disk.\n"
-				;;
-			130)
-				# ED - 130k
-				printf "\x96\x02\x80\x20\x80\00\00\00\00\00\00\00\00\00\00\00" > ${DEST}
-				truncate -s +130k ${DEST}
-				printf "\nCreated new ED disk.\n"
-				;;
-			180)
-				# DD - 180k
-				printf "\x96\x02\xE8\x2C\x00\01\00\00\00\00\00\00\00\00\00\00" > ${DEST}
-				truncate -s +180k ${DEST}
-				printf "\nCreated new DD disk.\n"
-				;;
-		esac
+	DISKSIZE=${1:-$DENSITY}
+	case $DISKSIZE in
+		90)
+			# SD - 90k
+			printf "\x96\x02\x80\x16\x80\00\00\00\00\00\00\00\00\00\00\00" > ${DEST}
+			truncate -s +90k ${DEST}
+			printf "\nCreated new SD disk.\n"
+			;;
+		130)
+			# ED - 130k
+			printf "\x96\x02\x80\x20\x80\00\00\00\00\00\00\00\00\00\00\00" > ${DEST}
+			truncate -s +130k ${DEST}
+			printf "\nCreated new ED disk.\n"
+			;;
+		180)
+			# DD - 180k
+			printf "\x96\x02\xE8\x2C\x00\01\00\00\00\00\00\00\00\00\00\00" > ${DEST}
+			truncate -s +180k ${DEST}
+			printf "\nCreated new DD disk.\n"
+			;;
+	esac
 }
 
 function do_Archive() {
@@ -49,12 +49,12 @@ function do_Archive() {
 
 	DEST="${DISKDIR}${DISK}.atr"
 	if [ ! -e ${DEST} ]; then
-		create_atr 130
+		create_atr ${DENSITY}
 	else
 		read -p "[!!] Image file exists. Overwrite [Y/n]?" -n 1 DUMMY
 		case $DUMMY in
 			[yY])
-				create_atr 130
+				create_atr ${DENSITY}
 				;;
 			[nN])
 				printf "Image file not cleared.\n"
@@ -73,25 +73,28 @@ function do_Archive() {
 		printf " !-! Press the 'b' key to add that information to the ${DISK}.nfo file !-!\n"
 		read -s -n 1 -p "Press any other key when copy is completed succesfully..." DUMMY
 		case $DUMMY in
+			[bB])
+				printf "\nTagging ${DISK} as to contain bad sectors and move on...\n"
+				printf "\nBAD SECTORS\n" >> ${DISKDIR}${DISK}.nfo
+				RETRY=false
+				;;
+			[dD])
+				# DD - 180k
+				DENSITY="180"
+				create_atr ${DENSITY}
+				printf "\nRetrying with disk type DD...\n"
+				;;
 			[eE])
 				# ED - 130k
-				create_atr 130
+				DENSITY="130"
+				create_atr ${DENSITY}
 				printf "\nRetrying with disk type ED...\n"
 				;;
 			[sS])
 				# SD - 90k
-				create_atr 90
+				DENSITY="90"
+				create_atr ${DENSITY}
 				printf "\nRetrying with disk type SD...\n"
-				;;
-			[dD])
-				# DD - 180k
-				create_atr 180
-				printf "\nRetrying with disk type DD...\n"
-				;;
-			[bB])
-				printf "\nTagging ${DISK} as to contain bad sectors and move on...\n"
-				printf "\nBAD SECTORS\n" > ${DISKDIR}${DISK}.nfo
-				RETRY=false
 				;;
 			*)
 				echo
@@ -104,6 +107,7 @@ function do_Archive() {
 
 function upd_Settings(){
 	printf "\n\nUpdate Settings...\n"
+	read -p "Default density [90/130/180] [Current: $DENSITY]: " -e -i "$DENSITY" DENSITY
 	read -p "Initial disk name: " -e DISK
 	read -p "Use previous values (Disk name/Description) [y/n] [Current: $USEPREV]: " -e -i "$USEPREV" USEPREV
 	read -p "Image directory [Current: $DISKDIR]: " -e -i "$DISKDIR" DISKDIR
@@ -113,6 +117,7 @@ function upd_Settings(){
 
 	printf "\nNew settings:\n"
 	printf "# Settings\n"
+	printf "DENSITY=\"%s\"\t\t\t\t;# Default density (90/130/180)\n" "${DENSITY}"
 	printf "DISK=\"%s\"\t\t\t\t;# Initial disk name\n" "${DISK}"
     printf "PREVDISK=\"\${DISK}\"\n"
 	printf "USEPREV=\"%s\"\t\t\t;# Use previous values (Disk name/Description)\n" "${USEPREV}"
@@ -125,6 +130,7 @@ function upd_Settings(){
 	case $DUMMY in
 		[yY])
 			printf "# Settings\n" > ${CFGFILE}
+			printf "DENSITY=\"%s\"\t\t\t\t;# Default density (90/130/180)\n" "${DENSITY}" >> ${CFGFILE}
 			printf "DISK=\"%s\"\t\t\t\t;# Initial disk name\n" "${DISK}" >> ${CFGFILE}
 			printf "PREVDISK=\"\${DISK}\"\n" >> ${CFGFILE}
 			printf "USEPREV=\"%s\"\t\t\t;# Use previous values (Disk name/Description)\n" "${USEPREV}" >> ${CFGFILE}
@@ -146,6 +152,7 @@ CFGFILE="${0%.*}.cfg"
 source $CFGFILE 2>/dev/null
 
 # Sane defaults (in case config file is missing)
+DENSITY="${DENSITY:-130}"
 DISK="${DISK:-}"
 PREVDISK="${DISK}"
 USEPREV="y"

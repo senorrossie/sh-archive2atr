@@ -39,9 +39,9 @@ An alternative setup which I use more frequently consists of:
 
 # Software
 
-The Pi boots a minimal environment which also contains the ARM version of [sio2bsd](https://github.com/TheMontezuma/SIO2BSD). On it I mount my NAS via NFS so all the disk images are immediately available on my home network. I login as a regular user and start the diskarchive.sh script in the directory I want to store the images in.
+The Pi boots a minimal environment which also contains the ARM version of [sio2bsd](https://github.com/TheMontezuma/SIO2BSD). On it I mount my NAS via NFS so all the disk images are immediately available on my home network. I log onto (ssh) the Pi as a regular user and start the diskarchive.sh script in the directory I want to store the images in.
 
-## diskarchive Script
+## diskarchive Shell Script
 
 After starting the script, you are given a couple of options:
 ```
@@ -56,6 +56,7 @@ Disk Name ('q' to Quit, 's' for Settings, 't' to load Tooldisk)?
 **S** (+ **ENTER**) takes you to the settings. There are some hardcoded defaults in the script, which you can be override via a config file. Once you set all the options, the script gives an overview of your selection and prompts you to write them to the config file.
 ```
 Update Settings...
+Default density [90/130/180] [Current: $DENSITY]: 130
 Initial disk name: 
 Use previous values (Disk name/Description) [y/n] [Current: y]: y
 Image directory [Current: ./]: ./
@@ -65,6 +66,7 @@ sio2bsd parameters [Current: -s /dev/ttyS2 -q pal]: -s /dev/ttyS2 -q pal
 
 New settings:
 # Settings
+DENSITY="130"                   ;# Default density
 DISK=""                         ;# Initial disk name
 PREVDISK="${DISK}"
 USEPREV="y"                     ;# Use previous values (Disk name/Description)
@@ -102,7 +104,7 @@ If using the wrong disk type, press 's' for SD or 'd' for DD or 'e' for ED...
  !-! Press the 'b' key to add that information to the disknr80b.nfo file !-!
 Press any other key when copy is completed succesfully...
 ```
-The script creates an *130k **ED*** disk image by default and prompts you to choose to either select a different image size (**S** for SD (90k), **E** for ED (130k), **D** for DD (180k)), tag the copy as having bad sectors (appends the text BAD SECTORS to the contents of the .nfo file) or to press any other key to write the log file and repeat the proces.
+The script creates a disk image of the size set in the config (*130k **ED*** by default) and prompts you to choose to either select a different image size (**S** for SD (90k), **E** for ED (130k), **D** for DD (180k)), tag the copy as having bad sectors (appends the text BAD SECTORS to the contents of the .nfo file) or to press any other key to write the log file and repeat the proces. It reuses the selected image size for the next run.
 
 The next prompt for a disk name after completing the copy sets the disk name and its description to the one previously used. If you want to reenter the info each round, set the USEPREV value to **n**.
 
