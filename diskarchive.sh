@@ -94,7 +94,27 @@ function do_Archive() {
 	RETRY=true
 	my_sio2bsd
 	while [ "${RETRY}" == "true" ]; do
-		printf "\nIf using the wrong disk type, press:\n\t's' for SD(90k),\n\t'd' for DD(180k),\n\t'e' for ED(130k),\n\t'q' for QD(360k)\n" 
+		printf "\nIf using the wrong disk type, press:\n"
+		if [ "$DENSITY" == "90" ]; then
+			printf " *\t's' for SD(90k),\n"
+		else
+			printf "\t's' for SD(90k),\n"
+		fi
+		if [ "$DENSITY" == "130" ]; then
+			printf " *\t'e' for ED(130k),\n"
+		else
+			printf "\t'e' for ED(130k),\n"
+		fi
+		if [ "$DENSITY" == "180" ]; then
+			printf " *\t'd' for DD(180k),\n"
+		else
+			printf "\t'd' for DD(180k),\n"
+		fi
+		if [ "$DENSITY" == "360" ]; then
+			printf " *\t'q' for QD(360k),\n"
+		else
+			printf "\t'q' for QD(360k),\n"
+		fi
 		printf " !!\t'b' to tag the disk as having bad sectors in the %s.nfo file\t!!\n" "${DISK}"
 		read -s -n 1 -p "Press any other key when copy is completed succesfully..." DUMMY
 		case $DUMMY in
