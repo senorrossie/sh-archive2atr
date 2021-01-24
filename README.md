@@ -88,7 +88,7 @@ READY
 Disk Name ('q' to Quit, 's' for Settings, 't' to load Tooldisk)? t
 
 Mounting tooldisk.
-Boot the Atari and load your preferred disk copy tool. Press any key when your copier is loaded succesfully...
+Boot the Atari and load your preferred disk copy tool. Press any key when copier is loaded succesfully...
 ```
 
 ### Disk image creation
@@ -96,19 +96,26 @@ When you enter a disk name, followed by **ENTER**, the script prompts for a one 
 ```
  *** DISK ARCHIVER ***
 READY
-Disk Name ('q' to Quit, 's' for Settings, 't' to load Tooldisk)? disknr80b
-One line description for the disk: The Hulk
+Disk Name ('q' to Quit, 's' for Settings, 't' to load Tooldisk)? diskname
+One line description for the disk: Example I
 
-If using the wrong disk type, press 's' for SD or 'd' for DD or 'e' for ED...
- !-!-! If you want to tag the current disk as containing Bad Sectors !-!-!
- !-! Press the 'b' key to add that information to the disknr80b.nfo file !-!
+Created new ED disk.
+
+If using the wrong disk type, press:
+        's' for SD(90k),
+ *      'e' for ED(130k),
+        'd' for DD(180k),
+        'q' for QD(360k),
+ !!     'b' to tag the disk as having bad sectors in the diskname.nfo file     !!
 Press any other key when copy is completed succesfully...
 ```
-The script creates a disk image of the size set in the config (*130k **ED*** by default) and prompts you to choose to either select a different image size (**S** for SD (90k), **E** for ED (130k), **D** for DD (180k)), tag the copy as having bad sectors (appends the text BAD SECTORS to the contents of the .nfo file) or to press any other key to write the log file and repeat the proces. It reuses the selected image size for the next run.
+The script creates a disk image of the size set in the config (*130k **ED*** by default) and prompts you to choose to either select a different image size (current size is marked with an asterisk), tag the copy as having bad sectors (appends the text BAD SECTORS to the contents of the .nfo file) or to press any other key to write the log file and repeat the proces. It reuses the selected image size for the next run.
 
 The next prompt for a disk name after completing the copy sets the disk name and its description to the one previously used. If you want to reenter the info each round, set the USEPREV value to **n**.
 
-# Copymate XE 3.7 - Key Reference
+# Copymate XE 3.7
+
+COPYMATE will duplicate standard Atari disks that can be used by DOS. Single, Double and Enhanced (1050) Densities are all supported. COPYMATE is *Density Smart*, it will determine the correct density of the source disk when you insert it and press [START].
 
 For easy reference in the future, here's a list of keys and their function within the Copymate program:
 
