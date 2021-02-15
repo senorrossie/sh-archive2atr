@@ -33,7 +33,9 @@ function my_sio2bsd() {
 	sleep 2
 	rm -rf /tmp/sio2bsd*
 	sleep 1
-	sio2bsd ${SIOPARM} ${DISK}.atr > ${DISKDIR}${DISK}.log &
+
+	sio2bsd ${SIOPARM} ${DEST}.atr > ${DEST}.log &
+
 	exec 2>&3	;# Restore STDERR
 }
 
@@ -42,26 +44,26 @@ function create_atr() {
 	case $DISKSIZE in
 		90)
 			# SD - 90k
-			printf "\x96\x02\x80\x16\x80\00\00\00\00\00\00\00\00\00\00\00" > ${DEST}
-			truncate -s +90k ${DEST}
+			printf "\x96\x02\x80\x16\x80\00\00\00\00\00\00\00\00\00\00\00" > ${DEST}.atr
+			truncate -s +90k ${DEST}.atr
 			printf "\nCreated new SD disk.\n"
 			;;
 		130)
 			# ED - 130k
-			printf "\x96\x02\x80\x20\x80\00\00\00\00\00\00\00\00\00\00\00" > ${DEST}
-			truncate -s +130k ${DEST}
+			printf "\x96\x02\x80\x20\x80\00\00\00\00\00\00\00\00\00\00\00" > ${DEST}.atr
+			truncate -s +130k ${DEST}.atr
 			printf "\nCreated new ED disk.\n"
 			;;
 		180)
 			# DD - 180k
-			printf "\x96\x02\xE8\x2C\x00\01\00\00\00\00\00\00\00\00\00\00" > ${DEST}
-			truncate -s +180k ${DEST}
+			printf "\x96\x02\xE8\x2C\x00\01\00\00\00\00\00\00\00\00\00\00" > ${DEST}.atr
+			truncate -s +180k ${DEST}.atr
 			printf "\nCreated new DD disk.\n"
 			;;
 		360)
 			# QD - 360k
-			printf "\x96\x02\xE8\x59\x00\01\00\00\00\00\00\00\00\00\00\00" > ${DEST}
-			truncate -s +360k ${DEST}
+			printf "\x96\x02\xE8\x59\x00\01\00\00\00\00\00\00\00\00\00\00" > ${DEST}.atr
+			truncate -s +360k ${DEST}.atr
 			printf "\nCreated new QD disk.\n"
 			;;
 	esac
@@ -73,11 +75,11 @@ function do_Archive() {
 		PREVDESC=${DESC[@]}
 	fi
 
-	DEST="${DISKDIR}${DISK}.atr"
+	DEST="${DISKDIR}${DISK}"
 	if [ ! -e ${DEST} ]; then
 		create_atr ${DENSITY}
 	else
-		read -p "[!!] Image file exists. Overwrite [Y/n]?" -n 1 DUMMY
+		read -p "[!!] Image file exists. Overwrite [Y/n]?" DUMMY
 		case $DUMMY in
 			[yY])
 				create_atr ${DENSITY}
@@ -120,8 +122,8 @@ function do_Archive() {
 		case $DUMMY in
 			[bB])
 				printf "\nTagging ${DISK} as having bad sectors...\n"
-				echo ${DESC[@]} > ${DISKDIR}${DISK}.nfo
-				printf "\nBAD SECTORS\n" >> ${DISKDIR}${DISK}.nfo
+				echo ${DESC[@]} > ${DEST}.nfo
+				printf "\nBAD SECTORS\n" >> ${DEST}.nfo
 				;;
 			[dD])
 				# DD - 180k
@@ -228,9 +230,9 @@ while [ "${DISK}" != "q" ]; do
 			break
 			;;
 		[tT])
-			DISK=${TOOLDISK}
-			if [ ! -e ${DISK}.atr ]; then
-				echo "Unable to locate tooldisk ${DISKDIR}${DISK}.atr, exiting..."
+			DEST=${TOOLDISK}
+			if [ ! -e ${DEST}.atr ]; then
+				echo "Unable to locate tooldisk ${DEST}.atr, exiting..."
 				break
 			fi
 			printf "\nMounting tooldisk.\n"
@@ -238,16 +240,19 @@ while [ "${DISK}" != "q" ]; do
 			printf " Boot the Atari and load your preferred disk copy tool. "
 			read -s -n 1 -p "Press any key when copier is loaded succesfully..." DUMMY
 			PREVDISK=""
+			unset DUMMY
 			;;
 		[sS])
 			upd_Settings
 			PREVDISK=""
 			;;
 		*)
+			DEST="${DISKDIR}/${DISK}"
 			do_Archive
 			;;
 	esac
 	DISK=""
+	DEST=""
 done
 
 exec 2>&-	;# Close STDERR

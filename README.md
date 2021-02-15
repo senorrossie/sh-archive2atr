@@ -11,14 +11,16 @@ A very promising device is the SIO2PC/10502PC Dual USB device sold by Atari8Ware
 
 Having been out of Atari business for at least 2 decades I couldn't recall which sector copiers I used to copy disks for swapping purposes, So I downloaded a bunch of Utility disks and started testing. The list below consists of tools I tested and my personal experience with them.
 
-|Tool  |Type  |Pro's  |Con's  |
-|------|------|-------|-------|
-|Super Duper  |Sector Copier  |Retry Damaged Sectors  |Highly interactive, Multi Stage Copy (48K RAM), Copies only in Single Density Mode  |
-|Super Duper Enhanced Density  |Sector Copier  |Retry Damaged Sectors  |Highly interactive, Multi Stage Copy (48K RAM), Manual Density Selection  |
-|(Un)Happy Sector Copier by Spike  |Sector Copier  |Auto Density Detection  |Aborts on Damaged Sector  |
-|Backup Master 130 XE  |Sector Copier  |Auto Density Detection (?)  |Abort/Skip Damaged Sector  |
-|\*Copymate XE 3.7  |Sector Copier  |Retry Damaged Sectors(Max 7x)  |Skips After Max Retries  |
-\*Denotes my tool of choice.
+|Tool  |Type  |Hi-Speed  |Pro's  |Con's  |
+|------|------|----------|-------|-------|
+|Super Duper  |Sector Copier  |  ?  |Retry Damaged Sectors  |Highly interactive, Multi Stage Copy (48K RAM), Copies only in Single Density Mode  |
+|Super Duper Enhanced Density  |Sector Copier  |  ?  |Retry Damaged Sectors  |Highly interactive, Multi Stage Copy (48K RAM), Manual Density Selection  |
+|(Un)Happy Sector Copier by Spike  |Sector Copier  |  ?  |Auto Density Detection  |Aborts on Damaged Sector  |
+|Backup Master 130 XE  |Sector Copier  |  ?  |Auto Density Detection (?)  |Abort/Skip Damaged Sector  |
+|Copy2000  |Sector Copier  |  Y  |Auto Density Detection  |Abort Damaged Sector |
+|US Sector-Copier 5  |Sector Copier  |  Y  |Auto Density Detection  |Abort Damaged Sector(?) | 
+|Copymate XE 3.7 **\***  |Sector Copier  |  Y  |Retry Damaged Sectors(Max 7x)  |Skips After Max Retries  |
+**\*** Denotes my tool of choice.
 
 Armed with a tool of choice, a Raspberry Pi with a level converter hooked up to the GPIO port on one side, and a SIO plug hooked up to the Atari 800XL on the other, I made some manual dumps of my most precious floppies before life got in the way.
 
@@ -32,7 +34,7 @@ The current archiving setup consists of an Atari 65XE (PAL), two 1050 drives (Ha
 ## Alt Hardware
 An alternative setup which I use more frequently consists of:
   * PAL 600XL w/ the Antonia 4MB memory expansion
-  * The latest [MyBIOS](http://www.mr-atari.com/myidehome.htm) OS
+  * The latest [MyBIOS](http://www.mr-atari.com/myidehome.htm) OS (Supports Hi-Speed SIO)
   * A 1st generation Banana Pi running [DietPi](https://DietPi.com) w/ [poor man's SIO](https://oshpark.com/shared_projects/cvBmkVl4) adapter.
   * Lotharek's [SIO Splitter](https://lotharek.pl/productdetail.php?id=158)
   * 2 x Atari 1050 disk drives w/ Happy mod
