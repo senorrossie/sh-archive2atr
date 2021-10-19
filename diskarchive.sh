@@ -34,7 +34,7 @@ function my_sio2bsd() {
 	rm -rf /tmp/sio2bsd*
 	sleep 1
 
-	sio2bsd ${SIOPARM} ${DEST}.atr > ${DEST}.log &
+	sio2bsd ${SIOPARM} "${DEST}.atr" > "${DEST}.log" &
 
 	exec 2>&3	;# Restore STDERR
 }
@@ -76,7 +76,7 @@ function do_Archive() {
 	fi
 
 	DEST="${DISKDIR}${DISK}"
-	if [ ! -e ${DEST} ]; then
+	if [ ! -e "${DEST}" ]; then
 		create_atr ${DENSITY}
 	else
 		read -p "[!!] Image file exists. Overwrite [Y/n]?" DUMMY
@@ -91,7 +91,7 @@ function do_Archive() {
 		unset DUMMY
 	fi
 
-	echo ${DESC[@]} > ${DISKDIR}${DISK}.nfo
+	echo ${DESC[@]} > "${DISKDIR}${DISK}.nfo"
 
 	RETRY=true
 	my_sio2bsd
@@ -122,8 +122,8 @@ function do_Archive() {
 		case $DUMMY in
 			[bB])
 				printf "\nTagging ${DISK} as having bad sectors...\n"
-				echo ${DESC[@]} > ${DEST}.nfo
-				printf "\nBAD SECTORS\n" >> ${DEST}.nfo
+				echo ${DESC[@]} > "${DEST}.nfo"
+				printf "\nBAD SECTORS\n" >> "${DEST}.nfo"
 				;;
 			[dD])
 				# DD - 180k
