@@ -1,7 +1,7 @@
 # Archiving your collection
 As I haven't found a good source on archiving your personal collection of Atari software on floppy disk, I documented my own progress, so others might benefit from it.
 
-I started looking for methods to copy my floppies to a PC so that when my 1050(s) break down, I still have some of my source code, letters, games, etc. As I only have recent hardware in the form of Apple, PC (intel) 'antiques' - albeit almost 20 years younger than my atari's - laptops from Y2k or a little bit more recent and several 'embedded' stuff in the form of Arduino and Raspberry Pi's, I started off this journey by looking into the various methods that are available to hook up one of the aforementioned devices to my Atari and 1050 setup so I could start archiving.
+I started looking for methods to copy my floppies to a PC so that when my 1050(s) break down, I still have some of my source code, letters, games, etc. As I only have recent hardware in the form of Apple, PC (intel) 'antiques' - albeit almost 20 years younger than my atari's - laptops from Y2k or a little bit more recent and several 'embedded' stuff in the form of Arduino and Raspberry Pi's, I started this journey by looking into the various methods that are available to hook up one of the aforementioned devices to my Atari and 1050 setup so I could start archiving.
 
 # SIO2[Something Recent]
 
@@ -24,7 +24,7 @@ Having been out of Atari business for at least 2 decades I couldn't recall which
 
 Armed with a tool of choice, a Raspberry Pi with a level converter hooked up to the GPIO port on one side, and a SIO plug hooked up to the Atari 800XL on the other, I made some manual dumps of my most precious floppies before life got in the way.
 
-Fast forward a bit more than two years and here I am again in the process of archiving my collection. In the past two years I got a bit more current with the state of the Atari 8 bit scene, but didn't make any progress with archiving my floppy collection, that is, until now.
+Fast forward a bit more than two years and here I am again in the process of archiving my collection. In the past two years I got a bit more current with the state of the Atari 8-bit scene, but didn't make any progress with archiving my floppy collection, that is, until now.
 
 # Copying/Archiving
 
@@ -114,6 +114,9 @@ Press any other key when copy is completed succesfully...
 The script creates a disk image of the size set in the config (*130k **ED*** by default) and prompts you to choose to either select a different image size (current size is marked with an asterisk), tag the copy as having bad sectors (appends the text BAD SECTORS to the contents of the .nfo file) or to press any other key to write the log file and repeat the proces. It reuses the selected image size for the next run.
 
 The next prompt for a disk name after completing the copy sets the disk name and its description to the one previously used. If you want to reenter the info each round, set the USEPREV value to **n**.
+
+*NOTE* In order to use the sio2bsd device as drive two, in settings add a dash '-' after the sio2bsd parameters, eg:
+```SIOPARM="-s /dev/ttyS2 -q pal -"        ;# sio2bsd parameters```
 
 # Copymate XE 3.7
 

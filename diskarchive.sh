@@ -44,26 +44,26 @@ function create_atr() {
 	case $DISKSIZE in
 		90)
 			# SD - 90k
-			printf "\x96\x02\x80\x16\x80\00\00\00\00\00\00\00\00\00\00\00" > ${DEST}.atr
-			truncate -s +90k ${DEST}.atr
+			printf "\x96\x02\x80\x16\x80\00\00\00\00\00\00\00\00\00\00\00" > "${DEST}.atr"
+			truncate -s +90k "${DEST}.atr"
 			printf "\nCreated new SD disk.\n"
 			;;
 		130)
 			# ED - 130k
-			printf "\x96\x02\x80\x20\x80\00\00\00\00\00\00\00\00\00\00\00" > ${DEST}.atr
-			truncate -s +130k ${DEST}.atr
+			printf "\x96\x02\x80\x20\x80\00\00\00\00\00\00\00\00\00\00\00" > "${DEST}.atr"
+			truncate -s +130k "${DEST}.atr"
 			printf "\nCreated new ED disk.\n"
 			;;
 		180)
 			# DD - 180k
-			printf "\x96\x02\xE8\x2C\x00\01\00\00\00\00\00\00\00\00\00\00" > ${DEST}.atr
-			truncate -s +180k ${DEST}.atr
+			printf "\x96\x02\xE8\x2C\x00\01\00\00\00\00\00\00\00\00\00\00" > "${DEST}.atr"
+			truncate -s +180k "${DEST}.atr"
 			printf "\nCreated new DD disk.\n"
 			;;
 		360)
 			# QD - 360k
-			printf "\x96\x02\xE8\x59\x00\01\00\00\00\00\00\00\00\00\00\00" > ${DEST}.atr
-			truncate -s +360k ${DEST}.atr
+			printf "\x96\x02\xE8\x59\x00\01\00\00\00\00\00\00\00\00\00\00" > "${DEST}.atr"
+			truncate -s +360k "${DEST}.atr"
 			printf "\nCreated new QD disk.\n"
 			;;
 	esac
